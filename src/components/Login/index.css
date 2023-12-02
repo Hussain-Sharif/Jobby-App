@@ -24,16 +24,36 @@
 }
 .input-div {
   width: 90%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: transparent;
+  background-color: transparent; */
   margin: 10px;
+  position: relative;
 }
 .input-div label {
   color: #f8fafc;
   font-weight: bolder;
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: 0.625rem 0.625rem;
+  background-color: #272727;
+  padding-inline: 0.25rem;
+  border: 2px solid transparent;
+  pointer-events: none;
+  transition: translate 250ms, background-color 250ms, border-color 250ms;
+}
+.input-div:focus-within label,
+.input-div:not(:has(:placeholder-shown)) label {
+  translate: 0.625rem -1rem;
+  border-color: #b6c5ff;
+  border-radius: 10px;
+  padding: 5px;
+}
+.input-div::placeholder {
+  color: transparent;
 }
 .input-div input {
   color: #f1f5f9;
@@ -44,6 +64,7 @@
   padding: 10px;
   width: 100%;
   margin: 5px 0px;
+  padding-top: 18px;
 }
 .input-div input ::placeholder {
   color: #64748b;
