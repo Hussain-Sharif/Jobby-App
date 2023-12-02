@@ -1,0 +1,31 @@
+.home-bg {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/home-lg-bg.png');
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px 10px;
+}
+@media screen and (max-width: 768px) {
+  .home-bg {
+    background-image: url('https://assets.ccbp.in/frontend/react-js/home-sm-bg.png');
+  }
+}
+.home-bg h1 {
+  color: #fff;
+  font-weight: bold;
+}
+.home-bg p {
+  color: #fff;
+}
+.home-bg button {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  background-color: #6366f1;
+  color: #fff;
+  padding: 10px;
+}
