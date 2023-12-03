@@ -1,0 +1,13 @@
+.not-bg {
+  background-color: #000;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.not-bg img {
+  max-width: 300px;
+  max-height: 200px;
+}
