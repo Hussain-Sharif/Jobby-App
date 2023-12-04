@@ -28,7 +28,9 @@
   margin-right: 10px;
 }
 .link:hover {
-  text-shadow: 0px 0px 20px #fff, 0px 0px 40px #fff, 0px 0px 80px #fff;
+  text-decoration: underline;
+  position: relative;
+  text-decoration-color: #fbbf24;
 }
 .logout-btn {
   background-color: #4f46e5;
