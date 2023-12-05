@@ -2,7 +2,7 @@ import {Component} from 'react'
 import {FaStar} from 'react-icons/fa'
 import {MdLocationOn} from 'react-icons/md'
 import {BsSearch, BsBriefcase} from 'react-icons/bs'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import Cookies from 'js-cookie'
@@ -68,7 +68,7 @@ class Jobs extends Component {
     dataProfile: null,
     dataJobs: null,
     apiStatusJobs: apiStatusContainerJobs.initial,
-    employmentType: '',
+    employmentType: [],
     minimumPackage: '',
     search: '',
   }
@@ -84,8 +84,14 @@ class Jobs extends Component {
     this.setState({apiStatusJobs: apiStatusContainerJobs.inProgress})
 
     const {employmentType, minimumPackage, search} = this.state
-    const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&minimum_package=${minimumPackage}&search=${search}`
-    const jwt = Cookies.get('jwtToken')
+    console.log(
+      'API call after updation of type,salary',
+      employmentType,
+      minimumPackage,
+      search,
+    )
+    const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType.join()}&minimum_package=${minimumPackage}&search=${search}`
+    const jwt = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
       headers: {
@@ -95,6 +101,7 @@ class Jobs extends Component {
     const response = await fetch(url, options)
     if (response.ok === true) {
       const data = await response.json()
+      console.log('Jobs Items', data)
       const updatedData = {
         jobs: data.jobs.map(each => ({
           companyLogoUrl: each.company_logo_url,
@@ -108,6 +115,7 @@ class Jobs extends Component {
         })),
         total: data.total,
       }
+      console.log('Update JObs', updatedData)
       this.setState({
         dataJobs: updatedData,
         apiStatusJobs: apiStatusContainerJobs.success,
@@ -120,53 +128,68 @@ class Jobs extends Component {
   getJobsSuccess = () => {
     const {dataJobs} = this.state
     const {total, jobs} = dataJobs
-    const {
-      companyLogoUrl,
-      employmentType,
-      id,
-      jobDescription,
-      location,
-      packagePerAnnum,
-      rating,
-      title,
-    } = jobs
-    console.log({total, jobs})
+    // const {
+    //   companyLogoUrl,
+    //   employmentType,
+    //   id,
+    //   jobDescription,
+    //   location,
+    //   packagePerAnnum,
+    //   rating,
+    //   title,
+    // } = jobs
+    console.log('inside success', {total, jobs})
+    if (jobs.length === 0) {
+      return (
+        <>
+          <img
+            className="no-img"
+            src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+            alt="no job"
+          />
+          <h1 className="no-job-head">No Jobs Found</h1>
+          <p className="no-job-para">
+            We could not find any jobs. Try another filters.
+          </p>
+        </>
+      )
+    }
     return (
-      <>
+      <ul className="lg-jobs-list">
         {jobs.map(each => (
-          <Link key={each.id} to={`/jobs/:${id}`}>
+          <Link key={each.id} to={`/jobs/:${each.id}`}>
             <li className="jobItem">
               <div className="top">
-                <img src={companyLogoUrl} alt="company logo" />
+                <img src={each.companyLogoUrl} alt="company logo" />
                 <div className="title-div">
-                  <h1>{title}</h1>
+                  <h1>{each.title}</h1>
                   <div className="rating-div">
                     <FaStar className="rating-i" />
-                    <p>{rating}</p>
+                    <p>{each.rating}</p>
                   </div>
                 </div>
               </div>
               <div className="middle">
                 <div className="m-start">
                   <div className="location">
-                    <MdLocationOn />
-                    <p>{location}</p>
+                    <MdLocationOn className="l-icon" />
+                    <p>{each.location}</p>
                   </div>
-                  <div className="employmentType">
-                    <BsBriefcase />
-                    <p>{employmentType}</p>
+                  <div className="location">
+                    <BsBriefcase className="l-icon" />
+                    <p>{each.employmentType}</p>
                   </div>
                 </div>
-                <p>{packagePerAnnum}</p>
+                <p className="package">{each.packagePerAnnum}</p>
               </div>
               <div className="bottom">
                 <h1>Description</h1>
-                <p>{jobDescription}</p>
+                <p>{each.jobDescription}</p>
               </div>
             </li>
           </Link>
         ))}
-      </>
+      </ul>
     )
   }
 
@@ -212,7 +235,7 @@ class Jobs extends Component {
   getProfileApi = async () => {
     this.setState({apiStatusProfile: apiStatusContainerProfile.inProgress})
     const url = 'https://apis.ccbp.in/profile'
-    const jwt = Cookies.get('jwtToken')
+    const jwt = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
       headers: {
@@ -260,11 +283,11 @@ class Jobs extends Component {
     const {dataProfile} = this.state
     const {name, profileImageUrl, shortBio} = dataProfile
     return (
-      <>
+      <div className="profile">
         <img src={profileImageUrl} alt="profile" />
         <h1>{name}</h1>
         <p>{shortBio}</p>
-      </>
+      </div>
     )
   }
 
@@ -278,39 +301,94 @@ class Jobs extends Component {
     </button>
   )
 
+  typeChange = event => {
+    console.log('typeChange==>', event.target.value)
+    console.log('typeChange==>', event.target.checked)
+    this.setState(prev => {
+      const {employmentType} = prev
+      let updatedList
+      if (event.target.checked === true) {
+        updatedList = [...employmentType, event.target.value]
+      } else {
+        updatedList = employmentType.filter(each => each !== event.target.value)
+      }
+      return {employmentType: updatedList}
+    }, this.getJobApi)
+  }
+
+  salaryChange = event => {
+    console.log('salaryChange==>', event.target.value)
+    console.log('salaryChange==>', event)
+    this.setState({minimumPackage: event.target.value}, this.getJobApi)
+  }
+
+  searchChange = event => {
+    console.log('searchChange==>', event.target.value)
+    console.log('searchChange==>', event)
+    this.setState({search: event.target.value})
+  }
+
+  onSearch = () => {
+    this.getJobApi()
+  }
+
   render() {
+    const {search} = this.state
+    if (Cookies.get('jwt_token') === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
-      <>
+      <div className="main-bg">
         <Header />
         <div className="lg-jobs-bg">
           <div className="lg-left">
             <div className="sm-input-div">
-              <input type="search" placeholder="Search" />
-              <button type="button" data-testid="searchButton">
+              <input
+                onChange={this.searchChange}
+                type="search"
+                value={search}
+                placeholder="Search"
+              />
+              <button
+                onClick={this.onSearch}
+                type="button"
+                data-testid="searchButton"
+              >
                 {' '}
                 <BsSearch className="search-icon" />
               </button>
             </div>
-            <div className="profile">{this.getProfile()}</div>
-            <hr />
+            <div className="profile-bg">{this.getProfile()}</div>
+            <hr className="hr" />
             <div className="type">
               <h1>Type of Employment</h1>
               <ul className="types-list">
                 {employmentTypesList.map(each => (
                   <li key={each.employmentTypeId} className="type-item">
-                    <input type="checkbox" id={each.employmentTypeId} />
+                    <input
+                      onChange={this.typeChange}
+                      type="checkbox"
+                      value={each.employmentTypeId}
+                      id={each.employmentTypeId}
+                    />
                     <label htmlFor={each.employmentTypeId}>{each.label}</label>
                   </li>
                 ))}
               </ul>
             </div>
-            <hr />
+            <hr className="hr" />
             <div className="type">
               <h1>Salary Range</h1>
               <ul className="types-list">
                 {salaryRangesList.map(each => (
-                  <li>
-                    <input type="radio" id={each.salaryRangeId} />
+                  <li key={each.salaryRangeId} className="type-item">
+                    <input
+                      onChange={this.salaryChange}
+                      type="radio"
+                      id={each.salaryRangeId}
+                      value={each.salaryRangeId}
+                      name="salary"
+                    />
                     <label htmlFor={each.salaryRangeId}>{each.label}</label>
                   </li>
                 ))}
@@ -320,16 +398,25 @@ class Jobs extends Component {
           </div>
           <div className="lg-right">
             <div className="lg-input-div">
-              <input type="search" placeholder="Search" />
-              <button type="button" data-testid="searchButton">
+              <input
+                onChange={this.searchChange}
+                type="search"
+                value={search}
+                placeholder="Search"
+              />
+              <button
+                onClick={this.onSearch}
+                type="button"
+                data-testid="searchButton"
+              >
                 {' '}
                 <BsSearch className="search-icon" />
               </button>
             </div>
-            <ul className="lg-jobs-list">{this.getJobs()}</ul>
+            {this.getJobs()}
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
