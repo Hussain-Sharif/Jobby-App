@@ -12,7 +12,7 @@ class Login extends Component {
 
   onSuccess = data => {
     const {history} = this.props
-    Cookies.set('jwtToken', data.jwt_token)
+    Cookies.set('jwt_token', data.jwt_token, {expires: 10})
     history.replace('/')
   }
 
@@ -45,7 +45,7 @@ class Login extends Component {
 
   usernameRender = () => {
     const {username} = this.state
-    if (Cookies.get('jwtToken') !== undefined) {
+    if (Cookies.get('jwt_token') !== undefined) {
       return <Redirect to="/" />
     }
     return (
