@@ -9,7 +9,7 @@ import {withRouter, Link} from 'react-router-dom'
 const Header = props => {
   const toLogOut = () => {
     const {history} = props
-    Cookies.remove('jwtToken')
+    Cookies.remove('jwt_token')
     history.replace('/login')
   }
 
@@ -18,25 +18,33 @@ const Header = props => {
       <div className="set-1">
         <Link to="/">
           <img
+            className="logo"
             src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
             alt="website logo"
           />
         </Link>
-        <div className="route-div">
-          <Link className="link" to="/">
-            <h1>Home</h1>
-          </Link>
-          <Link className="link" to="/jobs">
-            <h1>Jobs</h1>
-          </Link>
-        </div>
-        <button className="logout-btn" type="button" onClick={toLogOut}>
-          Logout
-        </button>
+        <ul className="route-div">
+          <li>
+            <Link className="link" to="/">
+              <h1>Home</h1>
+            </Link>
+          </li>
+          <li>
+            <Link className="link" to="/jobs">
+              <h1>Jobs</h1>
+            </Link>
+          </li>
+          <li>
+            <button className="logout-btn" type="button" onClick={toLogOut}>
+              Logout
+            </button>
+          </li>
+        </ul>
       </div>
       <div className="set-2">
         <Link to="/">
           <img
+            className="logo"
             src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
             alt="website logo"
           />
