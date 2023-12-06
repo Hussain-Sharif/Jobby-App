@@ -141,44 +141,44 @@ class Jobs extends Component {
     console.log('inside success', {total, jobs})
     if (jobs.length === 0) {
       return (
-        <>
+        <div className="no-jobs-bg">
           <img
             className="no-img"
             src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
-            alt="no job"
+            alt="no jobs"
           />
           <h1 className="no-job-head">No Jobs Found</h1>
           <p className="no-job-para">
-            We could not find any jobs. Try another filters.
+            We could not find any jobs. Try other filters
           </p>
-        </>
+        </div>
       )
     }
     return (
       <ul className="lg-jobs-list">
         {jobs.map(each => (
-          <Link key={each.id} to={`/jobs/:${each.id}`}>
-            <li className="jobItem">
+          <li key={each.id}>
+            <Link to={`/jobs/${each.id}`} className="jobItem">
               <div className="top">
                 <img src={each.companyLogoUrl} alt="company logo" />
-                <div className="title-div">
-                  <h1>{each.title}</h1>
-                  <div className="rating-div">
-                    <FaStar className="rating-i" />
-                    <p>{each.rating}</p>
-                  </div>
+                {/* <div className="title-div"> */}
+                <h1>{each.title}</h1>
+                <div className="rating-div">
+                  <FaStar className="rating-i" />
+                  <p>{each.rating}</p>
+                  {/* </div> */}
                 </div>
               </div>
               <div className="middle">
                 <div className="m-start">
-                  <div className="location">
-                    <MdLocationOn className="l-icon" />
-                    <p>{each.location}</p>
-                  </div>
-                  <div className="location">
-                    <BsBriefcase className="l-icon" />
-                    <p>{each.employmentType}</p>
-                  </div>
+                  {/* <div className="location"> */}
+                  <MdLocationOn className="l-icon" />
+                  <p>{each.location}</p>
+                  {/* </div> */}
+                  {/* <div className="location"> */}
+                  <BsBriefcase className="l-icon" />
+                  <p>{each.employmentType}</p>
+                  {/* </div> */}
                 </div>
                 <p className="package">{each.packagePerAnnum}</p>
               </div>
@@ -186,8 +186,8 @@ class Jobs extends Component {
                 <h1>Description</h1>
                 <p>{each.jobDescription}</p>
               </div>
-            </li>
-          </Link>
+            </Link>
+          </li>
         ))}
       </ul>
     )
@@ -394,7 +394,7 @@ class Jobs extends Component {
                 ))}
               </ul>
             </div>
-            <ul className="sm-jobs-list">{this.getJobs()}</ul>
+            {/* <ul className="sm-jobs-list">{this.getJobs()}</ul> */}
           </div>
           <div className="lg-right">
             <div className="lg-input-div">
