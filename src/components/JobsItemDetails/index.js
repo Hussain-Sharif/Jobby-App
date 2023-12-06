@@ -32,7 +32,9 @@ class JobsItemDetails extends Component {
     const {match} = this.props
     const {params} = match
     const {id} = params
-    const url = `https://apis.ccbp.in/jobs/:${id}`
+    console.log('id:', id)
+    console.log('JWT', jwt)
+    const url = `https://apis.ccbp.in/jobs/${id}`
     const options = {
       method: 'GET',
       headers: {
@@ -40,6 +42,7 @@ class JobsItemDetails extends Component {
       },
     }
     const response = await fetch(url, options)
+    console.log(response)
     if (response.ok === true) {
       const data = await response.json()
       console.log('Fetched Data of Item', data)
@@ -95,59 +98,60 @@ class JobsItemDetails extends Component {
       lifeAtCompany,
     } = jobDetails
     return (
-      <div className="job-bg">
-        <div className="jobItem">
-          <div className="top">
-            <img src={companyLogoUrl} alt="job details company logo" />
-            <div className="title-div">
-              <h1>{title}</h1>
-              <div className="rating-div">
-                <FaStar className="rating-i" />
-                <p>{rating}</p>
+      <ul>
+        <li className="job-bg">
+          <div className="jobItem">
+            <div className="top">
+              <img src={companyLogoUrl} alt="job details company logo" />
+              <div className="title-div">
+                <h1>{title}</h1>
+                <div className="rating-div">
+                  <FaStar className="rating-i" />
+                  <p>{rating}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="middle">
-            <div className="m-start">
-              <div className="location">
-                <MdLocationOn className="l-icon" />
-                <p>{location}</p>
+            <div className="middle">
+              <div className="m-start">
+                <div className="location">
+                  <MdLocationOn className="l-icon" />
+                  <p>{location}</p>
+                </div>
+                <div className="location">
+                  <BsBriefcase className="l-icon" />
+                  <p>{employmentType}</p>
+                </div>
               </div>
-              <div className="location">
-                <BsBriefcase className="l-icon" />
-                <p>{employmentType}</p>
-              </div>
+              <p className="package">{packagePerAnnum}</p>
             </div>
-            <p className="package">{packagePerAnnum}</p>
+            <div className="bottom">
+              <h1>Description</h1>
+              <a href={companyWebsiteUrl} target="__blank">
+                Visit
+              </a>
+              <FaExternalLinkAlt />
+              <p>{jobDescription}</p>
+            </div>
+            <div className="skills">
+              <h1>Skills</h1>
+              {skills.map(each => (
+                <li key={each.name}>
+                  <img src={each.imageUrl} alt={each.name} />
+                  <p>{each.name}</p>
+                </li>
+              ))}
+            </div>
+            <div>
+              <h1>Life at Company</h1>
+              <p>{lifeAtCompany.description}</p>
+              <img src={lifeAtCompany.imageUrl} alt="life at company" />
+            </div>
           </div>
-          <div className="bottom">
-            <h1>Description</h1>
-            <a href={companyWebsiteUrl} target="__blank">
-              Visit
-            </a>
-            <FaExternalLinkAlt />
-            <p>{jobDescription}</p>
-          </div>
-          <div className="skills">
-            <h1>Skills</h1>
-            {skills.map(each => (
-              <li>
-                <img src={each.imageUrl} alt={each.name} />
-              </li>
-            ))}
-          </div>
-          <div>
-            <h1>Life at Company</h1>
-            <p>{lifeAtCompany.description}</p>
-            <img src={lifeAtCompany.imageUrl} alt="life at company" />
-          </div>
-        </div>
-        <div className="sim-card">
-          <h1>Similar Jobs</h1>
-          <ul>
-            {similarJobs.map(each => (
-              <li>
-                <li className="jobItem">
+          <div className="sim-card">
+            <h1>Similar Jobs</h1>
+            <ul>
+              {similarJobs.map(each => (
+                <li key={each.id} className="jobItem">
                   <div className="top">
                     <img
                       src={each.companyLogoUrl}
@@ -179,11 +183,11 @@ class JobsItemDetails extends Component {
                     <p>{each.jobDescription}</p>
                   </div>
                 </li>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+              ))}
+            </ul>
+          </div>
+        </li>
+      </ul>
     )
   }
 
@@ -208,7 +212,7 @@ class JobsItemDetails extends Component {
   )
 
   getJobRetry = () => {
-    this.getJobApi()
+    this.getApi()
   }
 
   getRender = () => {
