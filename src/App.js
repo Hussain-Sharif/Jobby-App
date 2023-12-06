@@ -52,7 +52,7 @@ const App = () => (
     <Route exact path="/login" component={Login} />
     <Route exact path="/" component={Home} />
     <Route exact path="/jobs" component={Jobs} />
-    <Route exact path="/jobs/id" component={JobsItemDetails} />
+    <Route exact path="/jobs/:id" component={JobsItemDetails} />
     <Route exact path="/not-found" component={NotFound} />
     <Redirect to="not-found" />
   </Switch>
