@@ -16,21 +16,22 @@ const Header = props => {
   return (
     <nav className="nav-bg">
       <div className="set-1">
-        <Link to="/">
-          <img
-            className="logo"
-            src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
-            alt="website logo"
-          />
-        </Link>
         <ul className="route-div">
           <li>
-            <Link className="link" to="/">
-              <h1>Home</h1>
+            <Link to="/">
+              <img
+                className="logo"
+                src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
+                alt="website logo"
+              />
             </Link>
           </li>
-          <li>
-            <Link className="link" to="/jobs">
+
+          <li className="routes">
+            <Link className="link l1" to="/">
+              <h1>Home</h1>
+            </Link>
+            <Link className="link l2" to="/jobs">
               <h1>Jobs</h1>
             </Link>
           </li>
@@ -56,7 +57,7 @@ const Header = props => {
           <BsBriefcase className="i1" />
         </Link>
         <button className="logout-btn" type="button" onClick={toLogOut}>
-          <FiLogOut />{' '}
+          <FiLogOut className="i1" />{' '}
         </button>
       </div>
     </nav>
