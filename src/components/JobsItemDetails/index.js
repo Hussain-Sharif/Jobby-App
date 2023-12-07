@@ -1,8 +1,9 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
-import {FaExternalLinkAlt, FaStar} from 'react-icons/fa'
+import {MdStar, MdLocationOn} from 'react-icons/md'
+import {FaExternalLinkAlt} from 'react-icons/fa'
+
 import {Redirect} from 'react-router-dom'
-import {MdLocationOn} from 'react-icons/md'
 import {BsBriefcase} from 'react-icons/bs'
 import Loader from 'react-loader-spinner'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
@@ -25,6 +26,10 @@ class JobsItemDetails extends Component {
   componentDidMount() {
     this.getApi()
   }
+
+  renderImage = url => (
+    <img className="company-img" src={url} alt="life at company" />
+  )
 
   getApi = async () => {
     this.setState({apiStatus: apiStatusJob.inProgress})
@@ -97,97 +102,111 @@ class JobsItemDetails extends Component {
       skills,
       lifeAtCompany,
     } = jobDetails
+    console.log('LPA', similarJobs)
     return (
-      <ul>
-        <li className="job-bg">
-          <div className="jobItem">
-            <div className="top">
-              <img src={companyLogoUrl} alt="job details company logo" />
-              <div className="title-div">
-                <h1>{title}</h1>
-                <div className="rating-div">
-                  <FaStar className="rating-i" />
-                  <p>{rating}</p>
-                </div>
+      <li className="job-bg">
+        <div className="jobItem">
+          <div className="top">
+            <img src={companyLogoUrl} alt="job details company logo" />
+            <div className="title-div">
+              <h1>{title}</h1>
+              <div className="rating-div">
+                <MdStar className="rating-i" />
+                <p>{rating}</p>
               </div>
             </div>
-            <div className="middle">
-              <div className="m-start">
-                <div className="location">
-                  <MdLocationOn className="l-icon" />
-                  <p>{location}</p>
-                </div>
-                <div className="location">
-                  <BsBriefcase className="l-icon" />
-                  <p>{employmentType}</p>
-                </div>
+          </div>
+          <div className="middle m-change">
+            <div className="m-start">
+              <div className="location">
+                <MdLocationOn className="l-icon" />
+                <p>{location}</p>
               </div>
-              <p className="package">{packagePerAnnum}</p>
+              <div className="location">
+                <BsBriefcase className="l-icon" />
+                <p>{employmentType}</p>
+              </div>
             </div>
-            <div className="bottom">
+            <p className="package">{packagePerAnnum}</p>
+          </div>
+          <div className="details-bottom">
+            <div className="des-div">
               <h1>Description</h1>
-              <a href={companyWebsiteUrl} target="__blank">
-                Visit
+              <a
+                className="hyper-link"
+                href={companyWebsiteUrl}
+                target="__blank"
+              >
+                Visit <FaExternalLinkAlt className="hyper-link" />
               </a>
-              <FaExternalLinkAlt />
-              <p>{jobDescription}</p>
             </div>
-            <div className="skills">
-              <h1>Skills</h1>
+
+            <p>{jobDescription}</p>
+          </div>
+          <div className="skills">
+            <h1>Skills</h1>
+            <ul className="skills-list">
               {skills.map(each => (
-                <li key={each.name}>
+                <li key={each.name} className="skill-item">
                   <img src={each.imageUrl} alt={each.name} />
                   <p>{each.name}</p>
                 </li>
               ))}
-            </div>
-            <div>
-              <h1>Life at Company</h1>
-              <p>{lifeAtCompany.description}</p>
-              <img src={lifeAtCompany.imageUrl} alt="life at company" />
-            </div>
-          </div>
-          <div className="sim-card">
-            <h1>Similar Jobs</h1>
-            <ul>
-              {similarJobs.map(each => (
-                <li key={each.id} className="jobItem">
-                  <div className="top">
-                    <img
-                      src={each.companyLogoUrl}
-                      alt="similar job company logo"
-                    />
-                    <div className="title-div">
-                      <h1>{each.title}</h1>
-                      <div className="rating-div">
-                        <FaStar className="rating-i" />
-                        <p>{each.rating}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="middle">
-                    <div className="m-start">
-                      <div className="location">
-                        <MdLocationOn className="l-icon" />
-                        <p>{each.location}</p>
-                      </div>
-                      <div className="location">
-                        <BsBriefcase className="l-icon" />
-                        <p>{each.employmentType}</p>
-                      </div>
-                    </div>
-                    <p className="package">{each.packagePerAnnum}</p>
-                  </div>
-                  <div className="bottom">
-                    <h1>Description</h1>
-                    <p>{each.jobDescription}</p>
-                  </div>
-                </li>
-              ))}
             </ul>
           </div>
-        </li>
-      </ul>
+          <div className="about ">
+            <div className="about-div">
+              <h1>Life at Company</h1>
+              <div className="sm-logo">
+                {this.renderImage(lifeAtCompany.imageUrl)}
+              </div>
+              <p className="about-text">{lifeAtCompany.description}</p>
+            </div>
+            <div className="lg-logo">
+              {this.renderImage(lifeAtCompany.imageUrl)}
+            </div>
+          </div>
+        </div>
+        <div className="sim-card">
+          <h1>Similar Jobs</h1>
+          <ul className="sim-list">
+            {similarJobs.map(each => (
+              <li key={each.id} className="jobItem sim-item">
+                <div className="top">
+                  <img
+                    src={each.companyLogoUrl}
+                    alt="similar job company logo"
+                  />
+                  <div className="title-div">
+                    <h1>{each.title}</h1>
+                    <div className="rating-div">
+                      <MdStar className="rating-i" />
+                      <p>{each.rating}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="middle">
+                  <div className="m-start">
+                    <div className="location">
+                      <MdLocationOn className="l-icon" />
+                      <p>{each.location}</p>
+                    </div>
+                    <div className="location">
+                      <BsBriefcase className="l-icon" />
+                      <p>{each.employmentType}</p>
+                    </div>
+                  </div>
+                  <p className="package">{each.packagePerAnnum}</p>
+                </div>
+                <div className="bottom">
+                  <h1>Description</h1>
+                  <p>{each.jobDescription}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
     )
   }
 
@@ -206,7 +225,7 @@ class JobsItemDetails extends Component {
   )
 
   getLoader = () => (
-    <div className="loader-container" data-testid="loader">
+    <div className="loader-container-details" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </div>
   )
@@ -236,7 +255,7 @@ class JobsItemDetails extends Component {
     return (
       <>
         <Header />
-        <div className="bg">{this.getRender()}</div>
+        <ul className="details-bg">{this.getRender()}</ul>
       </>
     )
   }
