@@ -1,6 +1,6 @@
 import {Component} from 'react'
-import {FaStar} from 'react-icons/fa'
-import {MdLocationOn} from 'react-icons/md'
+// import {FaStar} from 'react-icons/fa'
+import {MdLocationOn, MdStar} from 'react-icons/md'
 import {BsSearch, BsBriefcase} from 'react-icons/bs'
 import {Link, Redirect} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
@@ -155,30 +155,30 @@ class Jobs extends Component {
       )
     }
     return (
-      <ul className="lg-jobs-list">
+      <ul className="sm-jobs-list lg-jobs-list">
         {jobs.map(each => (
           <li key={each.id}>
             <Link to={`/jobs/${each.id}`} className="jobItem">
               <div className="top">
                 <img src={each.companyLogoUrl} alt="company logo" />
-                {/* <div className="title-div"> */}
-                <h1>{each.title}</h1>
-                <div className="rating-div">
-                  <FaStar className="rating-i" />
-                  <p>{each.rating}</p>
-                  {/* </div> */}
+                <div className="title-div">
+                  <h1>{each.title}</h1>
+                  <div className="rating-div">
+                    <MdStar className="rating-icon" />
+                    <p>{each.rating}</p>
+                  </div>
                 </div>
               </div>
               <div className="middle">
                 <div className="m-start">
-                  {/* <div className="location"> */}
-                  <MdLocationOn className="l-icon" />
-                  <p>{each.location}</p>
-                  {/* </div> */}
-                  {/* <div className="location"> */}
-                  <BsBriefcase className="l-icon" />
-                  <p>{each.employmentType}</p>
-                  {/* </div> */}
+                  <div className="location">
+                    <MdLocationOn className="l-icon" />
+                    <p>{each.location}</p>
+                  </div>
+                  <div className="location">
+                    <BsBriefcase className="l-icon" />
+                    <p>{each.employmentType}</p>
+                  </div>
                 </div>
                 <p className="package">{each.packagePerAnnum}</p>
               </div>
@@ -281,11 +281,11 @@ class Jobs extends Component {
 
   getProfileSuccess = () => {
     const {dataProfile} = this.state
-    const {name, profileImageUrl, shortBio} = dataProfile
+    const {profileImageUrl, shortBio} = dataProfile
     return (
       <div className="profile">
         <img src={profileImageUrl} alt="profile" />
-        <h1>{name}</h1>
+        <h1>Hussain Sharif</h1>
         <p>{shortBio}</p>
       </div>
     )
@@ -332,8 +332,29 @@ class Jobs extends Component {
     this.getJobApi()
   }
 
-  render() {
+  renderInputSearchJsx = () => {
     const {search} = this.state
+    return (
+      <div className="input-div">
+        <input
+          onChange={this.searchChange}
+          type="search"
+          value={search}
+          placeholder="Search"
+        />
+        <button
+          onClick={this.onSearch}
+          type="button"
+          data-testid="searchButton"
+        >
+          {' '}
+          <BsSearch className="search-icon" />
+        </button>
+      </div>
+    )
+  }
+
+  render() {
     if (Cookies.get('jwt_token') === undefined) {
       return <Redirect to="/login" />
     }
@@ -342,23 +363,8 @@ class Jobs extends Component {
         <Header />
         <div className="lg-jobs-bg">
           <div className="lg-left">
-            <div className="sm-input-div">
-              <input
-                onChange={this.searchChange}
-                type="search"
-                value={search}
-                placeholder="Search"
-              />
-              <button
-                onClick={this.onSearch}
-                type="button"
-                data-testid="searchButton"
-              >
-                {' '}
-                <BsSearch className="search-icon" />
-              </button>
-            </div>
             <div className="profile-bg">{this.getProfile()}</div>
+            <div className="sm-input-div">{this.renderInputSearchJsx()}</div>
             <hr className="hr" />
             <div className="type">
               <h1>Type of Employment</h1>
@@ -394,25 +400,10 @@ class Jobs extends Component {
                 ))}
               </ul>
             </div>
-            {/* <ul className="sm-jobs-list">{this.getJobs()}</ul> */}
+            <ul className="sm-jobs-list">{this.getJobs()}</ul>
           </div>
           <div className="lg-right">
-            <div className="lg-input-div">
-              <input
-                onChange={this.searchChange}
-                type="search"
-                value={search}
-                placeholder="Search"
-              />
-              <button
-                onClick={this.onSearch}
-                type="button"
-                data-testid="searchButton"
-              >
-                {' '}
-                <BsSearch className="search-icon" />
-              </button>
-            </div>
+            <div className="lg-input-div">{this.renderInputSearchJsx()}</div>
             {this.getJobs()}
           </div>
         </div>
