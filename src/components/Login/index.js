@@ -49,7 +49,7 @@ class Login extends Component {
       return <Redirect to="/" />
     }
     return (
-      <div className="input-div">
+      <div id="input-cont" className="input-div">
         <label htmlFor="user">USERNAME</label>
         <input
           type="text"
@@ -69,7 +69,7 @@ class Login extends Component {
   passwordRender = () => {
     const {password} = this.state
     return (
-      <div className="input-div">
+      <div id="input-cont" className="input-div">
         <label htmlFor="password">PASSWORD</label>
         <input
           type="password"
@@ -95,7 +95,7 @@ class Login extends Component {
           {this.usernameRender()}
           {this.passwordRender()}
           <div className="error-submit">
-            <button type="submit" onClick={this.onSubmit}>
+            <button className="login-btn" type="submit" onClick={this.onSubmit}>
               Login
             </button>
             <p>{`${errorMsg}`}</p>
