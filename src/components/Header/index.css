@@ -6,6 +6,7 @@
   width: 100%;
   /* padding: 0px 8px; */
   align-items: center;
+  height: 13vh;
 }
 .set-1 {
   flex-grow: 1;
@@ -17,16 +18,38 @@
   /* border: #fff 1px solid; */
 }
 .route-div {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  list-style-type: none;
+  /* border: #fff solid 2px; */
+  padding-left: 0;
+}
+.routes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 20vw;
+  /* border: #fff solid 2px; */
 }
 .link {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.896);
   margin-right: 10px;
 }
+.link h1 {
+  margin-left: 5px;
+}
+/* .l1{
+    margin-
+} */
 .link:hover {
   text-decoration: underline;
   position: relative;
@@ -43,6 +66,10 @@
   border-radius: 12px;
   margin-right: 10px;
 }
+.logout-btn:hover {
+  box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.102),
+    inset -20px -20px 60px rgba(255, 255, 255, 0.424);
+}
 .set-2 {
   display: none;
   flex-direction: row;
@@ -52,6 +79,7 @@
 }
 .logo {
   max-width: 140px;
+  margin-left: 10px;
 }
 @media screen and (max-width: 767px) {
   .set-2 {
@@ -69,4 +97,8 @@
 }
 .i1 {
   color: #fff;
+  font-size: 22px;
+}
+.i1:hover {
+  color: rgba(0, 0, 0, 0.102), inset rgba(255, 255, 255, 0.424);
 }
